@@ -2,6 +2,7 @@
 
 import psycopg2
 import os
+import sys
 from schema import config
 import time
 
