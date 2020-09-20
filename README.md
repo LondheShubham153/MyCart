@@ -1,4 +1,15 @@
-# MyCart app
+# MyCart Cli App
+
+### follow these commands to Install the App:
+
+```
+* change the config accorgingly 
+
+$ pip install -r requirements.txt
+$ python schema/create_schema.py ./schema/mycartkb.sql
+$ python myCart.py
+
+```
 
 ### Building the Docker container (Beta)
 
@@ -24,14 +35,4 @@ MyCart
 
 ```
 python tests.py
-```
-### Note: The non-dockerized Method goes as follows:
-
-```
-* change the config accorgingly 
-
-$ pip install -r requirements.txt
-$ python schema/create_schema.py ./schema/mycartkb.sql
-$ python myCart.py
-
 ```

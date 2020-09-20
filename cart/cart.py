@@ -64,20 +64,25 @@ class Cart:
                     break
 
     def generateBill(self):
+        
         print('------ Generating Bill ------\n')
         time.sleep(1)
+        
         self.cur.execute("SELECT * FROM cartuser where username='{}'".format(self.username))
         user = self.cur.fetchone()
         for item,price in self.items_in_cart.items():
             print("Item: "+item +" Price: "+price)
         
         print("Total: "+str(self.amount))
+
         bill = json.dumps(self.items_in_cart)
         if self.amount > 10000:
-            print("Amount after Discount: "+ str(self.amount-self.discount))
+            self.amount = self.amount-self.discount
+            print("Amount after Discount: "+ str(self.amount))
         
         sql = "INSERT INTO bill (userId,bill,amount) \
                 VALUES ('{}','{}',{})".format(user[0],bill,self.amount)
+        
         self.cur.execute(sql)
         self.con.commit()
                 
