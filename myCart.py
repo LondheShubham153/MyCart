@@ -24,9 +24,11 @@ def initDB():
                                       port=config.PG_PORT,
                                       database=config.PG_DATABASE)
         cursor = connection.cursor()
+
         return connection, cursor
 
     except (Exception, psycopg2.Error, psycopg2.OperationalError) as error:
+
         error_response_obj["Issue.severity"] = 'error'
         error_response_obj["Issue.code"] = 'exception'
         error_response_obj["Issue.diagnostics"] = 'There was a failure in connecting or retrieving data from the postgres'
@@ -53,8 +55,10 @@ def displayCartMenu():
     print('--------------------')
 
 def run():
+
     print("Checking connection to MyCart\n")
     time.sleep(2)
+    
     connection, cursor = initDB()
     print("Connection successful, Welcome to MyCart\n")
     
@@ -70,6 +74,7 @@ def run():
 
     while True:
         displayCartMenu()
+    
         n = int(input("Enter option : "))
         if n == 0:
             user.registerUser(isAdmin=True)
@@ -105,7 +110,6 @@ def run():
         else:
             os.system('clear')
             run()
-        
     
 if __name__ == '__main__':
     run()

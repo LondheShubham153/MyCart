@@ -3,7 +3,7 @@
 ### follow these commands to Install the App:
 
 ```
-* change the config accorgingly 
+* change the schema/config.py accorgingly 
 
 $ pip install -r requirements.txt
 $ python schema/create_schema.py ./schema/mycartkb.sql
