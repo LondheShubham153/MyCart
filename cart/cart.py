@@ -98,7 +98,6 @@ class Cart:
             print("\n")
         print('------------\n')
 
-        print('------ Generating Bill For {}------\n'.format(user[1]))
         time.sleep(1)
 
         

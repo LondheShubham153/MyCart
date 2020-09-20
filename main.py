@@ -2,15 +2,15 @@
 
 import psycopg2
 import os
-import config
+from schema import config
 import time
 
 # Importing classes designed for SRP
 
-from cartUser import CartUser
-from cartCategory import CartCategory
-from cartProduct import CartProduct
-from cart import Cart
+from cart.cartUser import CartUser
+from cart.cartCategory import CartCategory
+from cart.cartProduct import CartProduct
+from cart.cart import Cart
 
 def initDB():
     """
@@ -34,7 +34,7 @@ def initDB():
 
 
 
-def displayMainMenu():
+def displayCartMenu():
     """
     This is the menu for MyCart Cli application 
     """
@@ -68,7 +68,7 @@ def run():
     cart = Cart(connection, cursor,username)
 
     while True:
-        displayMainMenu()
+        displayCartMenu()
         n = int(input("Enter option : "))
         if n == 0:
             user.registerUser(isAdmin=True)
@@ -99,7 +99,7 @@ def run():
         elif n == 9:
             os.system('clear')
             connection.close()
-            print('----- Thank You -----')
+            print('----- Thank You For shopping with us-----')
             break
         else:
             os.system('clear')
