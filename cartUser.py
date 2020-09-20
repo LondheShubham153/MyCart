@@ -1,6 +1,11 @@
 
 class CartUser:
-    def registerUser(self,con,cur,isAdmin=None):
+
+    def __init__(self, con, cur):
+        self.con = con
+        self.cur = cur
+
+    def registerUser(self,isAdmin=None):
 
         print('------ User Registration ------\n')
         
@@ -12,15 +17,23 @@ class CartUser:
         else:    
             sql = 'INSERT INTO cartuser (username,email) VALUES (%s,%s)'
             val = (username,email)
-        cur.execute(sql,val)
-        con.commit()
+        self.cur.execute(sql,val)
+        self.con.commit()
         print('------ USER REGISTRATION COMPLETED ------\n')
 
 
-    def getAllUsers(self,con,cur):
+    def getUser(self,email):
+        self.cur.execute("SELECT * FROM cartuser where email='{}'".format(email))
+        username = self.cur.fetchone()
+        if username:
+            return username[1]
+        else:
+            return None
+
+    def getAllUsers(self):
         print('------ All Users ------\n')
-        cur.execute("SELECT * FROM cartuser")
-        userList = cur.fetchall()
+        self.cur.execute("SELECT * FROM cartuser")
+        userList = self.cur.fetchall()
         i = 0
         for user in userList:
             i += 1
@@ -31,4 +44,3 @@ class CartUser:
             print(" Admin Access : ", user[4])
             print("\n")
         print('------------\n')
-        exit()

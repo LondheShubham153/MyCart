@@ -28,12 +28,6 @@ create table Bill (
     billId  serial PRIMARY KEY,
     userId bigint not null references CartUser(id),
     bill     text NOT NULL,
+    amount     numeric NOT NULL DEFAULT 0, 
     lastUpdated timestamp not null default NOW()
-);
-
-create table Cart (
-  billId    int REFERENCES Bill (billId) ON UPDATE CASCADE ON DELETE CASCADE, 
-  productId int REFERENCES product (productId) ON UPDATE CASCADE, 
-  amount     numeric NOT NULL DEFAULT 0, 
-  CONSTRAINT bill_product_pkey PRIMARY KEY (billId, productId) 
 );

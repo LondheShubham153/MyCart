@@ -1,14 +1,21 @@
+# Importing required libraries
+
 import psycopg2
-import sys
 import os
 import config
 import time
 
+# Importing classes designed for SRP
+
 from cartUser import CartUser
 from cartCategory import CartCategory
 from cartProduct import CartProduct
+from cart import Cart
 
 def initDB():
+    """
+        This is the database initialization which returns a connection and cursor object
+    """
     try:
         connection = psycopg2.connect(user=config.PG_USERNAME,
                                       password=config.PG_PASSWORD,
@@ -28,6 +35,9 @@ def initDB():
 
 
 def displayMainMenu():
+    """
+    This is the menu for MyCart Cli application 
+    """
     print('------- MENU -------')
     print('  0. Register Admin')
     print('  1. Register User')
@@ -36,54 +46,64 @@ def displayMainMenu():
     print('  4. Get Categories')
     print('  5. Add Product')
     print('  6. Get Product By Category')
+    print('  7. Add Product To Cart')
+    print('  8. Get Bill By username')
+    print('  9. Exit')
     print('--------------------')
 
-def exit():
-    n = int(input(" Press 5 to exit : "))
-
-    if n == 5:
-        os.system('cls')  # For Windows
-        run()
-    else:
-        print(" Invalid Option")
-        exit()
-
 def run():
-
-    print("Checking connection to MyCart")
+    print("Checking connection to MyCart\n")
     time.sleep(2)
     connection, cursor = initDB()
-    print("Connection successful, Welcome to MyCart")
-    displayMainMenu()
-    user = CartUser() 
-    category = CartCategory()
-    product = CartProduct()
+    print("Connection successful, Welcome to MyCart\n")
+    
+    user = CartUser(connection, cursor) 
+    username = user.getUser(input("Enter your registered email : "))
+    
+    if not username:
+        user.registerUser()
 
-    n = int(input("Enter option : "))
-    if n == 0:
-        user.registerUser(connection, cursor,isAdmin=True)
-    elif n == 1:
-        os.system('clear')  
-        user.registerUser(connection, cursor)
-    elif n == 2:
-        os.system('clear')
-        user.getAllUsers(connection, cursor)
-    elif n == 3:
-        os.system('clear')
-        category.addCategory(connection, cursor)
-    elif n == 4:
-        os.system('clear')
-        category.getAllCategories(connection, cursor)
-    elif n == 5:
-        os.system('clear')
-        product.addProduct(connection, cursor)
-    elif n == 6:
-        os.system('clear')
-        product.getAllProductsByCategory(connection, cursor)
-        print('----- Thank You -----')
-    else:
-        os.system('cls')
-        run()
+    category = CartCategory(connection, cursor,username)
+    product = CartProduct(connection, cursor,username)
+    cart = Cart(connection, cursor,username)
+
+    while True:
+        displayMainMenu()
+        n = int(input("Enter option : "))
+        if n == 0:
+            user.registerUser(isAdmin=True)
+        elif n == 1:
+            os.system('clear')  
+            user.registerUser()
+        elif n == 2:
+            os.system('clear')
+            user.getAllUsers()
+        elif n == 3:
+            os.system('clear')
+            category.addCategory()
+        elif n == 4:
+            os.system('clear')
+            category.getAllCategories()
+        elif n == 5:
+            os.system('clear')
+            product.addProduct()
+        elif n == 6:
+            os.system('clear')
+            product.getAllProductsByCategory()
+        elif n == 7:
+            os.system('clear')
+            cart.addProductToCart()
+        elif n == 8:
+            os.system('clear')
+            cart.getBillForUser()
+        elif n == 9:
+            os.system('clear')
+            connection.close()
+            print('----- Thank You -----')
+            break
+        else:
+            os.system('clear')
+            run()
         
     
 if __name__ == '__main__':
