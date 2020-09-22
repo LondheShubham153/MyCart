@@ -77,8 +77,8 @@ class Cart:
         print("Total: "+str(self.amount))
 
         bill = json.dumps(self.items_in_cart)
+        self.amount = self.getDiscount(self.amount)
         if self.amount > 10000:
-            self.amount = self.amount-self.discount
             print("Amount after Discount: "+ str(self.amount))
         
         sql = "INSERT INTO bill (userId,bill,amount) \
@@ -105,6 +105,16 @@ class Cart:
         print('------------\n')
 
         time.sleep(1)
+    
+    def getDiscount(self,amount):
+        if amount > 10000:
+            amount = amount-self.discount
+            return amount
+        else:
+            return amount
+
+
+
 
         
         

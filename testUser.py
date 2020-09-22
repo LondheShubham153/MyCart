@@ -46,3 +46,13 @@ class TestMyCartUser(unittest.TestCase):
         con,cur = myCart.initDB()
         cart = myCart.Cart(con,cur,username) 
         cart.addProductToCart()
+
+    @patch('builtins.input', side_effect=['shubham', 1000,100000])
+    def test_discount(self,mock_input):
+        username = mock_input()
+        amount1 = mock_input()
+        amount2 = mock_input()
+        con,cur = myCart.initDB()
+        cart = myCart.Cart(con,cur,username) 
+        self.assertTrue(cart.getDiscount(amount1), 1000)
+        self.assertTrue(cart.getDiscount(amount2), 99500)
